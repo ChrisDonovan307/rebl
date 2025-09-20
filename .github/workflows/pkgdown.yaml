@@ -36,13 +36,11 @@ jobs:
 
       - uses: r-lib/actions/setup-renv@v2
 
-        #  - uses: r-lib/actions/setup-r-dependencies@v2
-        # with:
-        #   extra-packages: any::pkgdown, local::.
-        #   needs: website
-
-          #      - name: Install devtools # Add this because vignette was failing
-          # run: Rscript -e 'install.packages("devtools")'
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+         # Add extra packages to render vignettes
+         extra-packages: any::pkgdown, any::rmarkdown, any::devtools, local::.
+         needs: website
 
       - name: Build site
         run: pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE)
