@@ -1,0 +1,122 @@
+---
+title: "REBL Scores and Outputs"
+output: 
+  rmarkdown::html_vignette:
+    css: styles.css
+    toc: true
+    toc_depth: 2
+bibliography: references.bib
+vignette: >
+  %\VignetteIndexEntry{REBL Scores and Outputs}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  warning = FALSE
+)
+```
+
+```{r setup}
+library(rebl)
+```
+
+## Get REBL Scores
+
+Once we have a model we are happy with, we can get a data frame with our REBL scores ($\theta$):
+
+```{r}
+rebl_items <- id_rebl_items(
+  df = example, 
+  pattern = '^(?!res).*', 
+  perl = TRUE
+)
+
+model_cml <- get_rasch_model(
+  df = example, 
+  id = 'respondent_id', 
+  rebl_items = rebl_items,
+  type = 'cml'
+)
+
+rebl_scores <- get_rebl_scores(model = model_cml)
+head(rebl_scores)
+```
+
+`rebl_score`s are the latent person ability parameter $\theta$. We also include person fit statistics.
+
+```{r}
+hist(
+  rebl_scores$rebl_cml,
+  main = 'Histogram of REBL Scores',
+  xlab = 'REBL Score',
+  ylab = 'Frequency'
+)
+```
+
+TODO: Note symmetry
+
+The function recognizes the model type and generates the output df accordingly. Let's try it with the `mml_uncon` model:
+
+```{r}
+model_con <- get_rasch_model(
+  df = example, 
+  id = 'respondent_id', 
+  rebl_items = rebl_items,
+  type = 'mml_con'
+)
+
+rebl_scores <- get_rebl_scores(
+  model = model_con,
+  df = example,
+  rebl_items = rebl_items
+)
+head(rebl_scores[, 1:6])
+```
+
+Here, `Exp` is the expected frequency of the response pattern, `z1` is the person parameter (REBL score), and `se.z1` is the standard error. All of the ltm varieties of models result in this same structure:
+
+```{r}
+model_2pl <- get_rasch_model(
+  df = example, 
+  id = 'respondent_id', 
+  rebl_items = rebl_items,
+  type = 'mml_tpm'
+)
+rebl_scores <- get_rebl_scores(
+  model = model_2pl,
+  df = example,
+  rebl_items = rebl_items
+)
+head(rebl_scores[, 1:6])
+```
+
+TODO: interpret
+
+```{r}
+model_tpm <- get_rasch_model(
+  df = example, 
+  id = 'respondent_id', 
+  rebl_items = rebl_items,
+  type = 'mml_tpm'
+)
+rebl_scores <- get_rebl_scores(
+  model = model_tpm,
+  df = example,
+  rebl_items = rebl_items
+)
+head(rebl_scores[, 1:6])
+```
+
+TODO: interpret
+
+## Person Item Maps
+
+
+
+
+## ICC Plots
+
