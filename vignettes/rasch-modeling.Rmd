@@ -28,6 +28,7 @@ Something about REBL and PEBs and Rasch models.
 Install and load the `rebl` package and friends:
 
 ```{r warning = FALSE, output = FALSE}
+print(getwd())
 library(rebl)
 pacman::p_load(
   dplyr, 

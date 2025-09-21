@@ -5,8 +5,8 @@
 #'   response pattern fits the Rasch model.
 #'
 #' @param model A fitted eRm Rasch model object from [get_rasch_model()]
-#' @param include_fits Logical indicating whether to include person fit statistics
-#'   in the output (default: TRUE)
+#' @param df A data.frame containing all the REBL items and a unique id
+#' @param rebl_items A character vector REBL item names
 #'
 #' @returns A dataframe with participant IDs, REBL scores, and optionally person
 #'   fit statistics. When include_fits is TRUE, includes columns for outfit,
@@ -32,9 +32,7 @@
 #' }
 get_rebl_scores <- function(model,
                             df = NULL,
-                            rebl_items = NULL
-                            # include_fits = TRUE
-                            ) {
+                            rebl_items = NULL) {
 
   # Assertions
   assertthat::assert_that(
