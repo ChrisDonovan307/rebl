@@ -24,6 +24,7 @@ knitr::opts_chunk$set(
 
 ```{r setup}
 library(rebl)
+pacman::p_load(dplyr)
 ```
 
 ## Get REBL Scores
@@ -76,7 +77,9 @@ rebl_scores <- get_rebl_scores(
   df = example,
   rebl_items = rebl_items
 )
-head(rebl_scores[, 1:6])
+rebl_scores %>% 
+  dplyr::select(respondent_id, Exp:se.z1) %>% 
+  head()
 ```
 
 Here, `Exp` is the expected frequency of the response pattern, `z1` is the person parameter (REBL score), and `se.z1` is the standard error. All of the ltm varieties of models result in this same structure:
@@ -93,7 +96,9 @@ rebl_scores <- get_rebl_scores(
   df = example,
   rebl_items = rebl_items
 )
-head(rebl_scores[, 1:6])
+rebl_scores %>% 
+  dplyr::select(respondent_id, z1:se.z1) %>% 
+  head()
 ```
 
 TODO: interpret
@@ -110,7 +115,9 @@ rebl_scores <- get_rebl_scores(
   df = example,
   rebl_items = rebl_items
 )
-head(rebl_scores[, 1:6])
+rebl_scores %>% 
+  dplyr::select(respondent_id, z1:se.z1) %>% 
+  head()
 ```
 
 TODO: interpret
