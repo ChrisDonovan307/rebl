@@ -12,6 +12,8 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+> **NOTE:** Example df is small and simulated, which causes non-convergence errors in some models.
+
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,

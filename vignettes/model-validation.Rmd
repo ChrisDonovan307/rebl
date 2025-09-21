@@ -12,8 +12,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-> **NOTE:** Test DF is small and causes non-convergence errors in some models.
-
+> **NOTE:** Example df is small and simulated, which causes non-convergence errors in some models.
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(

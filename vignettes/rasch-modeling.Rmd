@@ -12,17 +12,13 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+> **NOTE:** Example df is small and simulated, which causes non-convergence errors in some models.
+
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
-```
-
-```{r setup}
-library(rebl)
-# pacman::p_load_current_gh('ChrisDonovan307/rebl')
-# devtools::load_all()
 ```
 
 ## Introduction
