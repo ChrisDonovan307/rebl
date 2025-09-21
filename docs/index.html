@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="index.html">rebl</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9002</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -35,7 +35,9 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="articles/getting-rebl-scores.html">Getting REBL Scores</a></li>
+<li><a class="dropdown-item" href="articles/rasch-modeling.html">Rasch Modeling</a></li>
+    <li><a class="dropdown-item" href="articles/model-validation.html">Model Validation</a></li>
+    <li><a class="dropdown-item" href="articles/rebl-scores-and-outputs.html">REBL Scores and Outputs</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="news/index.html">Changelog</a></li>
@@ -55,8 +57,8 @@
   <main id="main" class="col-md-9"><div class="section level1">
 <div class="page-header"><h1 id="rebl">REBL<a class="anchor" aria-label="anchor" href="#rebl"></a>
 </h1></div>
-<p>Dr. Trisha Shrum, Chris Donovan</p>
-<p>September 20, 2025</p>
+<p>Chris Donovan, Dr. Trisha Shrum</p>
+<p>September 21, 2025</p>
 <!-- badges: start -->
 
 <div class="section level2">
@@ -65,26 +67,51 @@
 <p>This is the repository for the Repeated Environmental Behavior Latent (REBL) Scale project. It contains all the code to build the REBL scale from raw data through visualizations.</p>
 </div>
 <div class="section level2">
-<h2 id="rebl-package">REBL Package<a class="anchor" aria-label="anchor" href="#rebl-package"></a>
+<h2 id="installing-rebl">Installing REBL<a class="anchor" aria-label="anchor" href="#installing-rebl"></a>
 </h2>
-<div class="section level3">
-<h3 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
-</h3>
 <p>To install the <code>rebl</code> package:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://remotes.r-lib.org" class="external-link">'remotes'</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">'remotes'</span><span class="op">)</span></span>
-<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">'tshrum/rebl'</span><span class="op">)</span></span></code></pre></div>
-</div>
-<div class="section level3">
-<h3 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
-</h3>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">'ChrisDonovan307/rebl'</span><span class="op">)</span></span></code></pre></div>
 <p>See vignette for an example of how to use the package.</p>
 </div>
+<div class="section level2">
+<h2 id="using-rebl">Using REBL<a class="anchor" aria-label="anchor" href="#using-rebl"></a>
+</h2>
+<p>To get REBL Scores, we first identify our REBL items as a character vector. If you already have this handy, you can skip this step. Next, we select a model to run and get a model object. Finally, we wrangle REBL Scores from the model.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ChrisDonovan307/rebl" class="external-link">rebl</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">rebl_items</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/id_rebl_items.html">id_rebl_items</a></span><span class="op">(</span></span>
+<span>  df <span class="op">=</span> <span class="va">example</span>, </span>
+<span>  pattern <span class="op">=</span> <span class="st">'^(?!res).*'</span>, </span>
+<span>  perl <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">model_cml</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_rasch_model.html">get_rasch_model</a></span><span class="op">(</span></span>
+<span>  df <span class="op">=</span> <span class="va">example</span>, </span>
+<span>  id <span class="op">=</span> <span class="st">'respondent_id'</span>, </span>
+<span>  rebl_items <span class="op">=</span> <span class="va">rebl_items</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">'cml'</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">rebl_scores</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_rebl_scores.html">get_rebl_scores</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">model_cml</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">rebl_scores</span><span class="op">)</span></span></code></pre></div>
+<p>See the <a href="https://chrisdonovan307.github.io/rebl/articles/rasch-modeling.html">vignettes</a> for details on how to use REBL Score to measure pro-environmental behavior using different model types as well as model validation.</p>
 </div>
 <div class="section level2">
 <h2 id="rebl-calculator">REBL Calculator<a class="anchor" aria-label="anchor" href="#rebl-calculator"></a>
 </h2>
 <p>There is also a <a href="https://cdonov12.w3.uvm.edu/rebl_calculator/" class="external-link">REBL Score Calculator</a> that will take a dataset and produce all the results you might need for you. Note that it currently has a limited range of applications, but will be updated with more features and broader use cases shortly.</p>
+</div>
+<div class="section level2">
+<h2 id="coming-soon">Coming Soon<a class="anchor" aria-label="anchor" href="#coming-soon"></a>
+</h2>
+<ul>
+<li>Model validation: reliability and invariance</li>
+<li>Model outputs and GoF</li>
+<li>Test linking to baseline</li>
+</ul>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
@@ -123,6 +150,7 @@
 <h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
 <li><a href="https://app.codecov.io/gh/ChrisDonovan307/rebl" class="external-link"><img src="https://codecov.io/gh/ChrisDonovan307/rebl/graph/badge.svg" alt="Codecov test coverage"></a></li>
+<li><a href="https://github.com/ChrisDonovan307/rebl/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/ChrisDonovan307/rebl/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
 </ul>
 </div>
 

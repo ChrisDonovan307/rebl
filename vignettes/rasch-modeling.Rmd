@@ -1,5 +1,5 @@
 ---
-title: "Getting REBL Scores"
+title: "Rasch Modeling"
 output: 
   rmarkdown::html_vignette:
     css: styles.css
@@ -7,16 +7,17 @@ output:
     toc_depth: 2
 bibliography: references.bib
 vignette: >
-  %\VignetteIndexEntry{Getting REBL Scores}
+  %\VignetteIndexEntry{Rasch Modeling}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
+> **NOTE:** Example df is small and simulated, which causes non-convergence errors in some models.
+
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>",
-  warning = FALSE
+  comment = "#>"
 )
 ```
 
@@ -27,8 +28,8 @@ Something about REBL and PEBs and Rasch models.
 Install and load the `rebl` package and friends:
 
 ```{r warning = FALSE, output = FALSE}
-# pacman::p_load_current_gh('tshrum/rebl')
-devtools::load_all()
+print(getwd())
+library(rebl)
 pacman::p_load(
   dplyr, 
   ggplot2,
@@ -84,7 +85,9 @@ df <- reverse_code_rebl_items(df, reversed_items)
 head(df[,1:6])
 ```
 
-## Rasch Modeling
+## Rasch Models
+
+### CML
 
 Now we're ready to run the Rasch model and get REBL scores. The Rasch model for dichotomous items in the `eRm` package [@mair2007] estimates the probability $P$ of a person $v$ to endorse an item $i$ to be:
 
@@ -107,6 +110,10 @@ model_cml <- get_rasch_model(
 
 Here, the coefficients represent the item difficulty parameters. Note that the discrimination of every item is set to 1.
 
+TODO: Interpretation
+
+### MML
+
 We can also run a set of Marginal Maximum Likelihood (MML) models using the `ltm` package [@rizopoulos2006]. Parameters are estimated by maximizing the log-likelihoods of the observed data. The model is implemented in `ltm` by parameterizing the $m$th sample unit as:
 
 $$
@@ -115,7 +122,7 @@ $$
 
 a function of observed response vectors $x_m$, the rank of the respondent in latent trait values $z_m$, and the distribution of person abilities $dz_m$.
 
-First we try a constrained Rasch model, where item discriminations are constrained to all equal 1:
+First we try a constrained Rasch model, where item discrimination is constrained to all equal 1:
 
 ```{r}
 model_con <- get_rasch_model(
@@ -127,7 +134,9 @@ model_con <- get_rasch_model(
 summary(model_con)
 ```
 
-We can also run the MML unconstrained, where item discriminations are set to be equal but can vary from one:
+TODO: Interpretation
+
+We can also run the MML unconstrained, where item discrimination is set to be equal but can vary from one:
 
 ```{r}
 model_uncon <- get_rasch_model(
@@ -136,6 +145,7 @@ model_uncon <- get_rasch_model(
   rebl_items = rebl_items,
   type = 'mml_uncon'
 )
+summary(model_uncon)
 ```
 
 Or a two parameter logistic model that estimates both item difficulty and discrimination:
@@ -147,6 +157,7 @@ model_2pl <- get_rasch_model(
   rebl_items = rebl_items,
   type = 'mml_2pl'
 )
+summary(model_2pl)
 ```
 
 Finally, we can use the three parameter logistic model that also estimates a latent variable for guessing:
@@ -158,75 +169,7 @@ model_tpm <- get_rasch_model(
   rebl_items = rebl_items,
   type = 'mml_tpm'
 )
+summary(model_tpm)
 ```
-
-## Model Fit
-
-Add model fit, model comparisons. PI maps and such. ICC plots.
-
-## Get REBL Scores
-
-Once we have our model, we can get a data frame with out REBL scores ($\theta$) as well as person fit statistics:
-
-```{r}
-rebl_scores <- get_rebl_scores(
-  model = model_cml
-)
-head(rebl_scores)
-```
-
-`rebl_score`s are the latent person ability parameter $\theta$. We also include person fit statistics.
-
-The function recognizes the model type and generates the output df accordingly. Let's try it with the `mml_uncon` model:
-
-```{r}
-rebl_scores <- get_rebl_scores(
-  model = model_con,
-  df = df,
-  rebl_items = rebl_items
-)
-head(rebl_scores[, 1:6])
-```
-
-Here, `Exp` is the expected frequency of the response pattern, `z1` is the person parameter (REBL score), and `se.z1` is the standard error. All of the ltm varieties of models result in this same structure:
-
-```{r}
-rebl_scores <- get_rebl_scores(
-  model = model_2pl,
-  df = df,
-  rebl_items = rebl_items
-)
-head(rebl_scores[, 1:6])
-```
-
-```{r}
-rebl_scores <- get_rebl_scores(
-  model = model_tpm,
-  df = df,
-  rebl_items = rebl_items
-)
-head(rebl_scores)
-```
-
-## Fits
-
-### Person FIt
-
-For `eRm` model:
-
-```{r}
-person_fits <- get_person_fits(model_cml)
-head(person_fits)
-```
-For `ltm` models:
-
-```{r}
-person_fits <- get_person_fits(model_2pl)
-head(person_fits)
-```
-
-Here, $L_0$ is the Levine and Rubin (1979) test statistic, $L_z$ is the standardized version (Drasgow et al., 1985), and $p$ is the test of person fit where the null hypothesis is good fit.
-
-### Item Fit
 
 ## References

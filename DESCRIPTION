@@ -1,6 +1,6 @@
 Package: rebl
 Title: Measure Pro-Environmental Behavior
-Version: 0.0.0.9001
+Version: 0.0.0.9002
 Authors@R: c(
     person("Christopher", "Donovan", email = "christopher.donovan@uvm.edu", role = c("aut", "cre")),
     person("Trisha", "Shrum", email = "trisha.shrum@uvm.edu", role = c("aut")))
@@ -14,9 +14,13 @@ Imports:
     dplyr,
     eRm,
     ltm,
-    psych
+    purrr,
+    stringr,
+    tibble
 Suggests: 
     knitr,
+    pacman,
+    reactable,
     rmarkdown,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
@@ -24,5 +28,5 @@ Depends:
     R (>= 3.5)
 LazyData: true
 VignetteBuilder: knitr
-URL: https://github.com/ChrisDonovan307/rebl
+URL: https://github.com/ChrisDonovan307/rebl, https://chrisdonovan307.github.io/rebl
 BugReports: https://github.com/ChrisDonovan307/rebl/issues

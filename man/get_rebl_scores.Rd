@@ -9,8 +9,9 @@ get_rebl_scores(model, df = NULL, rebl_items = NULL)
 \arguments{
 \item{model}{A fitted eRm Rasch model object from \code{\link[=get_rasch_model]{get_rasch_model()}}}
 
-\item{include_fits}{Logical indicating whether to include person fit statistics
-in the output (default: TRUE)}
+\item{df}{A data.frame containing all the REBL items and a unique id}
+
+\item{rebl_items}{A character vector REBL item names}
 }
 \value{
 A dataframe with participant IDs, REBL scores, and optionally person

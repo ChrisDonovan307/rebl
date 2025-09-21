@@ -1,0 +1,58 @@
+#' Raw REBL Survey Data
+#'
+#' @description The unprocessed dataset containing simulated responses to the
+#'   REBL survey from 100 participants. This dataset contains character
+#'   responses ("Yes"/"No") for 24 REBL items measuring pro-environmental
+#'   behaviors across four domains: food, home, packaging, social, and water.
+#'
+#' @format A data frame with 100 rows and 25 variables:
+#'   \describe{
+#'     \item{respondent_id}{Character. Unique participant identifier (p1-p100)}
+#'     \item{foodLocal}{Character. Eating locally grown food ("Yes"/"No")}
+#'     \item{foodLunchNoMeat}{Character. Eating lunch without meat ("Yes"/"No")}
+#'     \item{foodMeat}{Character. Eating meat regularly ("Yes"/"No")}
+#'     \item{foodOatMilk}{Character. Drinking oat milk ("Yes"/"No")}
+#'     \item{foodTofu}{Character. Eating tofu ("Yes"/"No")}
+#'     \item{foodVegan}{Character. Following vegan diet ("Yes"/"No")}
+#'     \item{homeClothesCold}{Character. Washing clothes in cold water ("Yes"/"No")}
+#'     \item{homeClothesHang}{Character. Hanging clothes to dry ("Yes"/"No")}
+#'     \item{homeLightsOff}{Character. Turning lights off when leaving room ("Yes"/"No")}
+#'     \item{packCarriedUtensils}{Character. Carrying reusable utensils ("Yes"/"No")}
+#'     \item{packCompost}{Character. Composting organic waste ("Yes"/"No")}
+#'     \item{packContainerToRestaurant}{Character. Bringing container to restaurant ("Yes"/"No")}
+#'     \item{packPickedUpLitter}{Character. Picking up litter ("Yes"/"No")}
+#'     \item{packPullRecycleFromTrash}{Character. Pulling recyclables from trash ("Yes"/"No")}
+#'     \item{packRags}{Character. Using rags instead of paper towels ("Yes"/"No")}
+#'     \item{packReusableMug}{Character. Using reusable mug ("Yes"/"No")}
+#'     \item{packReusedPaperPlasticBags}{Character. Reusing paper/plastic bags ("Yes"/"No")}
+#'     \item{purchBuyNothing}{Character. Participating in buy nothing groups ("Yes"/"No")}
+#'     \item{socialDocumentary}{Character. Watching environmental documentaries ("Yes"/"No")}
+#'     \item{socialGroup}{Character. Participating in environmental groups ("Yes"/"No")}
+#'     \item{socialRead}{Character. Reading about environmental issues ("Yes"/"No")}
+#'     \item{socialSupportive}{Character. Being supportive of environmental causes ("Yes"/"No")}
+#'     \item{waterShowerStop}{Character. Stopping water while showering ("Yes"/"No")}
+#'     \item{waterTeethStop}{Character. Stopping water while brushing teeth ("Yes"/"No")}
+#'   }
+#'
+#' @details This dataset contains the original character-coded responses from the
+#'   REBL survey before any processing. It represents how participants actually
+#'   responded to each survey item. This data can be processed using functions
+#'   like \code{\link{recode_rebl}} to convert to numeric format for analysis.
+#'
+#' @seealso \code{\link{example}} for the processed numeric version of this data,
+#'   \code{\link{recode_rebl}} for converting character responses to numeric format
+#'
+#' @examples
+#' # Load the data
+#' data(raw_example)
+#'
+#' # View structure
+#' str(raw_example)
+#'
+#' # Count "Yes" responses for each item
+#' sapply(raw_example[, -1], function(x) sum(x == "Yes"))
+#'
+#' # Convert to numeric format
+#' # processed_data <- recode_rebl(raw_example)
+#'
+"raw_example"

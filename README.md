@@ -1,13 +1,14 @@
 REBL
 ================
-Dr. Trisha Shrum, Chris Donovan
+Chris Donovan, Dr. Trisha Shrum
 
-September 20, 2025
+September 21, 2025
 
 <!-- badges: start -->
 
 [![Codecov test
 coverage](https://codecov.io/gh/ChrisDonovan307/rebl/graph/badge.svg)](https://app.codecov.io/gh/ChrisDonovan307/rebl)
+[![R-CMD-check](https://github.com/ChrisDonovan307/rebl/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ChrisDonovan307/rebl/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 ## Introduction
@@ -16,20 +17,48 @@ This is the repository for the Repeated Environmental Behavior Latent
 (REBL) Scale project. It contains all the code to build the REBL scale
 from raw data through visualizations.
 
-## REBL Package
-
-### Installation
+## Installing REBL
 
 To install the `rebl` package:
 
 ``` r
 if (!require('remotes')) install.packages('remotes')
-remotes::install_github('tshrum/rebl')
+remotes::install_github('ChrisDonovan307/rebl')
 ```
 
-### Usage
-
 See vignette for an example of how to use the package.
+
+## Using REBL
+
+To get REBL Scores, we first identify our REBL items as a character
+vector. If you already have this handy, you can skip this step. Next, we
+select a model to run and get a model object. Finally, we wrangle REBL
+Scores from the model.
+
+``` r
+library(rebl)
+
+rebl_items <- id_rebl_items(
+  df = example, 
+  pattern = '^(?!res).*', 
+  perl = TRUE
+)
+
+model_cml <- get_rasch_model(
+  df = example, 
+  id = 'respondent_id', 
+  rebl_items = rebl_items,
+  type = 'cml'
+)
+
+rebl_scores <- get_rebl_scores(model = model_cml)
+head(rebl_scores)
+```
+
+See the
+[vignettes](https://chrisdonovan307.github.io/rebl/articles/rasch-modeling.html)
+for details on how to use REBL Score to measure pro-environmental
+behavior using different model types as well as model validation.
 
 ## REBL Calculator
 
@@ -38,3 +67,9 @@ Calculator](https://cdonov12.w3.uvm.edu/rebl_calculator/) that will take
 a dataset and produce all the results you might need for you. Note that
 it currently has a limited range of applications, but will be updated
 with more features and broader use cases shortly.
+
+## Coming Soon
+
+- Model validation: reliability and invariance
+- Model outputs and GoF
+- Test linking to baseline

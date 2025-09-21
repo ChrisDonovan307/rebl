@@ -13,3 +13,10 @@ footer:
   structure:
     left: developed_by
     right: built_with
+articles:
+  - title: Articles
+    navbar: ~
+    contents:
+      - rasch-modeling
+      - model-validation
+      - rebl-scores-and-outputs

@@ -1,0 +1,107 @@
+---
+title: "Model Validation"
+output: 
+  rmarkdown::html_vignette:
+    css: styles.css
+    toc: true
+    toc_depth: 2
+bibliography: references.bib
+vignette: >
+  %\VignetteIndexEntry{Model Validation}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+> **NOTE:** Example df is small and simulated, which causes non-convergence errors in some models.
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(rebl)
+pacman::p_load(
+  reactable,
+  dplyr
+)
+```
+
+Start by getting our CML model:
+
+```{r}
+rebl_items <- id_rebl_items(
+  df = example, 
+  pattern = '^(?!res).*', 
+  perl = TRUE
+)
+
+model_cml <- get_rasch_model(
+  df = example, 
+  id = 'respondent_id', 
+  rebl_items = rebl_items,
+  type = 'cml'
+)
+
+model_con <- get_rasch_model(
+  df = example, 
+  id = 'respondent_id', 
+  rebl_items = rebl_items,
+  type = 'mml_con'
+)
+
+```
+
+## Measurement Invariance
+
+## Unidimensionality
+
+## Person and Item Fit
+
+### Person Fit
+
+Use the `get_person_fits` function for either CML or MML models. For `eRm` model:
+
+```{r}
+person_fits <- get_person_fits(model_cml)
+head(person_fits)
+```
+
+TODO: Interpretation
+
+Same thing for `ltm` models:
+
+```{r}
+person_fits <- get_person_fits(model_con)
+head(person_fits)
+```
+
+Here, $L_0$ is the Levine and Rubin (1979) test statistic, $L_z$ is the standardized version (Drasgow et al., 1985), and $p$ is the test of person fit where the null hypothesis is good fit.
+
+### Item Fit
+
+```{r}
+fits <- get_item_fits(
+  model = model_cml,
+  df = example,
+  rebl_items = rebl_items
+)
+fits %>% 
+  reactable::reactable(
+    resizable = TRUE,
+    filterable = TRUE,
+    searchable = TRUE,
+    outlined = TRUE,
+    bordered = TRUE,
+    striped = TRUE,
+    compact = TRUE,
+    defaultColDef = colDef(format = colFormat(digits = 3)),
+    columns = list(
+      i.df = colDef(format = colFormat(digits = 0))
+    )
+  )
+```
+
+Note that the item fit function only works for CML models currently. More coming soon.

@@ -1,6 +1,4 @@
-# Prepare example dataset as modification of survey 2a
-
-
+# Prepare example dataset with jittered data
 df <- read.csv('revamp/example.csv')
 str(df)
 
