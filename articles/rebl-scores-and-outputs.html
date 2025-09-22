@@ -36,6 +36,7 @@
 <li><a class="dropdown-item" href="../articles/rasch-modeling.html">Rasch Modeling</a></li>
     <li><a class="dropdown-item" href="../articles/model-validation.html">Model Validation</a></li>
     <li><a class="dropdown-item" href="../articles/rebl-scores-and-outputs.html">REBL Scores and Outputs</a></li>
+    <li><a class="dropdown-item" href="../articles/test-linking.html">Test Linking</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -72,7 +73,8 @@
 causes non-convergence errors in some models.</p>
 </blockquote>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ChrisDonovan307/rebl" class="external-link">rebl</a></span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ChrisDonovan307/rebl" class="external-link">rebl</a></span><span class="op">)</span></span>
+<span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html" class="external-link">p_load</a></span><span class="op">(</span><span class="va">dplyr</span><span class="op">)</span></span></code></pre></div>
 <div class="section level2">
 <h2 id="get-rebl-scores">Get REBL Scores<a class="anchor" aria-label="anchor" href="#get-rebl-scores"></a>
 </h2>
@@ -129,14 +131,16 @@ accordingly. Let’s try it with the <code>mml_uncon</code> model:</p>
 <span>  df <span class="op">=</span> <span class="va">example</span>,</span>
 <span>  rebl_items <span class="op">=</span> <span class="va">rebl_items</span></span>
 <span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">rebl_scores</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">]</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   respondent_id foodLocal foodLunchNoMeat foodMeat foodOatMilk foodTofu</span></span>
-<span><span class="co">#&gt; 1            p1         1               0        1           0        0</span></span>
-<span><span class="co">#&gt; 2            p2         1               0        0           0        0</span></span>
-<span><span class="co">#&gt; 3            p3         0               1        1           0        1</span></span>
-<span><span class="co">#&gt; 4            p4         1               1        0           1        1</span></span>
-<span><span class="co">#&gt; 5            p5         1               1        0           1        1</span></span>
-<span><span class="co">#&gt; 6            p6         0               0        1           1        1</span></span></code></pre></div>
+<span><span class="va">rebl_scores</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">respondent_id</span>, <span class="va">Exp</span><span class="op">:</span><span class="va">se.z1</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   respondent_id          Exp          z1     se.z1</span></span>
+<span><span class="co">#&gt; 1            p1 1.233281e-06  0.01879318 0.3845670</span></span>
+<span><span class="co">#&gt; 2            p2 1.133194e-05  0.01879314 0.3845670</span></span>
+<span><span class="co">#&gt; 3            p3 1.827986e-06  0.16614210 0.3834232</span></span>
+<span><span class="co">#&gt; 4            p4 2.463664e-05  0.46130495 0.3859749</span></span>
+<span><span class="co">#&gt; 5            p5 2.323019e-05 -0.13006566 0.3873551</span></span>
+<span><span class="co">#&gt; 6            p6 1.804789e-06  0.76561442 0.3953806</span></span></code></pre></div>
 <p>Here, <code>Exp</code> is the expected frequency of the response
 pattern, <code>z1</code> is the person parameter (REBL score), and
 <code>se.z1</code> is the standard error. All of the ltm varieties of
@@ -153,14 +157,16 @@ models result in this same structure:</p>
 <span>  df <span class="op">=</span> <span class="va">example</span>,</span>
 <span>  rebl_items <span class="op">=</span> <span class="va">rebl_items</span></span>
 <span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">rebl_scores</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">]</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   respondent_id foodLocal foodLunchNoMeat foodMeat foodOatMilk foodTofu</span></span>
-<span><span class="co">#&gt; 1            p1         1               0        1           0        0</span></span>
-<span><span class="co">#&gt; 2            p2         1               0        0           0        0</span></span>
-<span><span class="co">#&gt; 3            p3         0               1        1           0        1</span></span>
-<span><span class="co">#&gt; 4            p4         1               1        0           1        1</span></span>
-<span><span class="co">#&gt; 5            p5         1               1        0           1        1</span></span>
-<span><span class="co">#&gt; 6            p6         0               0        1           1        1</span></span></code></pre></div>
+<span><span class="va">rebl_scores</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">respondent_id</span>, <span class="va">z1</span><span class="op">:</span><span class="va">se.z1</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   respondent_id          z1     se.z1</span></span>
+<span><span class="co">#&gt; 1            p1 -0.02581175 0.9826781</span></span>
+<span><span class="co">#&gt; 2            p2  0.02393432 0.9812392</span></span>
+<span><span class="co">#&gt; 3            p3  0.05696231 0.9829088</span></span>
+<span><span class="co">#&gt; 4            p4  0.27077841 0.9820741</span></span>
+<span><span class="co">#&gt; 5            p5 -0.04679345 0.9806309</span></span>
+<span><span class="co">#&gt; 6            p6  0.34543170 0.9853315</span></span></code></pre></div>
 <p>TODO: interpret</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model_tpm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_rasch_model.html">get_rasch_model</a></span><span class="op">(</span></span>
@@ -174,14 +180,16 @@ models result in this same structure:</p>
 <span>  df <span class="op">=</span> <span class="va">example</span>,</span>
 <span>  rebl_items <span class="op">=</span> <span class="va">rebl_items</span></span>
 <span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">rebl_scores</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">]</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   respondent_id foodLocal foodLunchNoMeat foodMeat foodOatMilk foodTofu</span></span>
-<span><span class="co">#&gt; 1            p1         1               0        1           0        0</span></span>
-<span><span class="co">#&gt; 2            p2         1               0        0           0        0</span></span>
-<span><span class="co">#&gt; 3            p3         0               1        1           0        1</span></span>
-<span><span class="co">#&gt; 4            p4         1               1        0           1        1</span></span>
-<span><span class="co">#&gt; 5            p5         1               1        0           1        1</span></span>
-<span><span class="co">#&gt; 6            p6         0               0        1           1        1</span></span></code></pre></div>
+<span><span class="va">rebl_scores</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">respondent_id</span>, <span class="va">z1</span><span class="op">:</span><span class="va">se.z1</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   respondent_id          z1     se.z1</span></span>
+<span><span class="co">#&gt; 1            p1 -0.02581175 0.9826781</span></span>
+<span><span class="co">#&gt; 2            p2  0.02393432 0.9812392</span></span>
+<span><span class="co">#&gt; 3            p3  0.05696231 0.9829088</span></span>
+<span><span class="co">#&gt; 4            p4  0.27077841 0.9820741</span></span>
+<span><span class="co">#&gt; 5            p5 -0.04679345 0.9806309</span></span>
+<span><span class="co">#&gt; 6            p6  0.34543170 0.9853315</span></span></code></pre></div>
 <p>TODO: interpret</p>
 </div>
 <div class="section level2">
