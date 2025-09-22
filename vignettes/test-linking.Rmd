@@ -1,0 +1,29 @@
+---
+title: "Test Linking"
+output:
+  rmarkdown::html_vignette:
+    css: styles.css
+    toc: true
+    toc_depth: 2
+bibliography: references.bib
+vignette: >
+  %\VignetteIndexEntry{Test Linking}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(rebl)
+```
+
+To Add:
+
+- Test linking of CML scores to baseline with `plink`
+- Test linking for MML scores
